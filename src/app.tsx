@@ -1,3 +1,3 @@
 export const App = () => {
-  return <h1>Olá mundo!</h1>
+  return <h1 className="bg-red-500 text-5xl font-bold underline">Olá mundo!</h1>
 }
