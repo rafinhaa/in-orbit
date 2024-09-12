@@ -1,4 +1,4 @@
-import * as ProgressPrimitive from '@radix-ui/react-progress'
+import * as ProgressPrimitive from "@radix-ui/react-progress"
 
 export function Progress(props: ProgressPrimitive.ProgressProps) {
   return (
