@@ -14,7 +14,7 @@ export const App = () => {
     staleTime: SIXTY_SECONDS,
   })
 
-  const hasSummary = data && data[0]?.total > 0
+  const hasSummary = data && data?.total > 0
 
   return (
     <Dialog>

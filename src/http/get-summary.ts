@@ -10,7 +10,7 @@ type SummaryResponse = {
   completed: number
   total: number
   goalsPerDay: Record<string, GoalsPerDay[]>
-}[]
+}
 
 export const getSummary = async (): Promise<SummaryResponse> => {
   const response = await fetch(`${env.VITE_API_URL}/get-week-summary`)

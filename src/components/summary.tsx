@@ -24,9 +24,7 @@ export const Summary = () => {
   const firstDayOfWeek = dayjs().startOf("week").format("DD MMM")
   const lastDayOfWeek = dayjs().endOf("week").format("DD MMM")
 
-  const completedPercent = Math.round(
-    (data[0]?.completed / data[0]?.total) * 100
-  )
+  const completedPercent = Math.round((data?.completed / data?.total) * 100)
 
   return (
     <div className="py-10 max-w-[480px] px-5 mx-auto flex flex-col gap-6">
@@ -54,8 +52,8 @@ export const Summary = () => {
         <div className="flex items-center justify-between text-xs text-zinc-400">
           <span>
             Você completou{" "}
-            <span className="text-zinc-100">{data[0].completed}</span> de{" "}
-            <span className="text-zinc-100">{data[0].total}</span> metas nessa
+            <span className="text-zinc-100">{data.completed}</span> de{" "}
+            <span className="text-zinc-100">{data.total}</span> metas nessa
             semana.
           </span>
           <span>{completedPercent}%</span>
@@ -69,7 +67,7 @@ export const Summary = () => {
       <div className="flex flex-col gap-6">
         <h2 className="text-xl font-medium">Sua semana</h2>
 
-        {Object.entries(data[0].goalsPerDay).map(([date, goals]) => (
+        {Object.entries(data.goalsPerDay).map(([date, goals]) => (
           <div key={date} className="flex flex-col gap-4">
             <h3 className="font-medium">
               <span className="capitalize">{weekDay(date)}</span>{" "}
