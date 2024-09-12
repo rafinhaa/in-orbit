@@ -1,4 +1,4 @@
-import { env } from "../env"
+import { API } from "../api"
 
 type CreateGoalCompletionParams = {
   goalId: string
@@ -7,7 +7,7 @@ type CreateGoalCompletionParams = {
 export const createGoalCompletion = async ({
   goalId,
 }: CreateGoalCompletionParams) => {
-  await fetch(`${env.VITE_API_URL}/completions`, {
+  await fetch(`${API}/completions`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -1,4 +1,4 @@
-import { env } from "../env"
+import { API } from "../api"
 
 type CreateGoalParams = {
   title: string
@@ -9,7 +9,7 @@ export const createGoal = async ({
   title,
   desiredWeeklyFrequency,
 }: CreateGoalParams) => {
-  await fetch(`${env.VITE_API_URL}/goals`, {
+  await fetch(`${API}/goals`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -1,4 +1,4 @@
-import { env } from "../env"
+import { API } from "../api"
 
 type GoalsPerDay = {
   id: string
@@ -13,7 +13,7 @@ type SummaryResponse = {
 }
 
 export const getSummary = async (): Promise<SummaryResponse> => {
-  const response = await fetch(`${env.VITE_API_URL}/get-week-summary`)
+  const response = await fetch(`${API}/get-week-summary`)
   const data = await response.json()
   return data?.summary
 }

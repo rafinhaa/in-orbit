@@ -1,4 +1,4 @@
-import { env } from "../env"
+import { API } from "../api"
 
 type PendingGoalsResponse = {
   id: string
@@ -8,7 +8,7 @@ type PendingGoalsResponse = {
 }[]
 
 export const getPendingGoals = async (): Promise<PendingGoalsResponse> => {
-  const response = await fetch(`${env.VITE_API_URL}/pending-goals`)
+  const response = await fetch(`${API}/pending-goals`)
   const data = await response.json()
   return data?.pendingGoals
 }
