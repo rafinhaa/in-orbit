@@ -10,4 +10,4 @@ FROM jawg/nginx-spa:latest AS runner
 
 WORKDIR /app
 COPY --from=builder /app/dist /usr/share/nginx/html
-RUN chmod -R 777 /usr/share/nginx/html
+RUN chmod -R 555 /usr/share/nginx/html
