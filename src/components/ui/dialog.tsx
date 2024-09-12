@@ -1,3 +1,4 @@
+import React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 
 export function Dialog(props: DialogPrimitive.DialogProps) {
@@ -25,18 +26,23 @@ export function DialogOverlay(props: DialogPrimitive.DialogOverlayProps) {
   )
 }
 
-export function DialogContent(props: DialogPrimitive.DialogContentProps) {
+export const DialogContent = React.forwardRef<
+  HTMLDivElement,
+  DialogPrimitive.DialogContentProps
+>((props, ref) => {
   return (
-    <DialogPortal>
-      <DialogOverlay />
-
-      <DialogPrimitive.DialogContent
+    <DialogPrimitive.Portal>
+      <DialogPrimitive.Overlay />
+      <DialogPrimitive.Content
         {...props}
+        ref={ref}
         className="fixed z-50 right-0 top-0 bottom-0 w-[400px] h-screen border-l border-zinc-900 bg-zinc-950 p-8"
       />
-    </DialogPortal>
+    </DialogPrimitive.Portal>
   )
-}
+})
+
+DialogContent.displayName = "DialogContent"
 
 export function DialogTitle(props: DialogPrimitive.DialogTitleProps) {
   return (
