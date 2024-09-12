@@ -5,14 +5,37 @@ import { InOrbitIcon } from "./in-orbit-icon"
 import { Progress, ProgressIndicator } from "./ui/progress-bar"
 import { Separator } from "./ui/separator"
 import { OutlineButton } from "./ui/outline-button"
+import { useQuery } from "@tanstack/react-query"
+import { getSummary } from "../http/get-summary"
+import dayjs from "dayjs"
+import { dateInFull, time, weekDay } from "../utils/dateAndTime"
+
+const SIXTY_SECONDS = 1000 * 60
 
 export const Summary = () => {
+  const { data } = useQuery({
+    queryKey: ["summary"],
+    queryFn: getSummary,
+    staleTime: SIXTY_SECONDS,
+  })
+
+  if (!data) return null
+
+  const firstDayOfWeek = dayjs().startOf("week").format("DD MMM")
+  const lastDayOfWeek = dayjs().endOf("week").format("DD MMM")
+
+  const completedPercent = Math.round(
+    (data[0]?.completed / data[0]?.total) * 100
+  )
+
   return (
     <div className="py-10 max-w-[480px] px-5 mx-auto flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <InOrbitIcon />
-          <span className="text-lg font-semibold">5 a 10 de Agosto</span>
+          <span className="text-lg font-semibold capitalize">
+            {firstDayOfWeek} - {lastDayOfWeek}
+          </span>
         </div>
 
         <DialogTrigger asChild>
@@ -30,10 +53,12 @@ export const Summary = () => {
 
         <div className="flex items-center justify-between text-xs text-zinc-400">
           <span>
-            Você completou <span className="text-zinc-100">8</span> de{" "}
-            <span className="text-zinc-100">15</span> metas nessa semana.
+            Você completou{" "}
+            <span className="text-zinc-100">{data[0].completed}</span> de{" "}
+            <span className="text-zinc-100">{data[0].total}</span> metas nessa
+            semana.
           </span>
-          <span>58%</span>
+          <span>{completedPercent}%</span>
         </div>
       </div>
 
@@ -64,50 +89,31 @@ export const Summary = () => {
       <div className="flex flex-col gap-6">
         <h2 className="text-xl font-medium">Sua semana</h2>
 
-        <div className="flex flex-col gap-4">
-          <h3 className="font-medium">
-            Domingo{" "}
-            <span className="text-zinc-400 text-xs">(10 de Agosto)</span>
-          </h3>
-
-          <ul className="flex flex-col gap-3">
-            <li className="flex items-center gap-2">
-              <CheckCircle2 className="size-4 text-pink-500" />
-              <span className="text-sm text-zinc-400">
-                Você completou "
-                <span className="text-zinc-100">Acordar cedo</span>" às{" "}
-                <span className="text-zinc-100">08:13h</span>
+        {Object.entries(data[0].goalsPerDay).map(([date, goals]) => (
+          <div key={date} className="flex flex-col gap-4">
+            <h3 className="font-medium">
+              <span className="capitalize">{weekDay(date)}</span>{" "}
+              <span className="text-zinc-400 text-xs">
+                ({dateInFull(date)})
               </span>
-            </li>
+            </h3>
 
-            <li className="flex items-center gap-2">
-              <CheckCircle2 className="size-4 text-pink-500" />
-              <span className="text-sm text-zinc-400">
-                Você completou "
-                <span className="text-zinc-100">Acordar cedo</span>" às{" "}
-                <span className="text-zinc-100">08:13h</span>
-              </span>
-            </li>
-          </ul>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <h3 className="font-medium">
-            Segunda-feira{" "}
-            <span className="text-zinc-400 text-xs">(11 de Agosto)</span>
-          </h3>
-
-          <ul className="flex flex-col gap-3">
-            <li className="flex items-center gap-2">
-              <CheckCircle2 className="size-4 text-pink-500" />
-              <span className="text-sm text-zinc-400">
-                Você completou "
-                <span className="text-zinc-100">Acordar cedo</span>" às{" "}
-                <span className="text-zinc-100">08:13h</span>
-              </span>
-            </li>
-          </ul>
-        </div>
+            <ul className="flex flex-col gap-3">
+              {goals.map(goal => (
+                <li key={goal.id} className="flex items-center gap-2">
+                  <CheckCircle2 className="size-4 text-pink-500" />
+                  <span className="text-sm text-zinc-400">
+                    Você completou "
+                    <span className="text-zinc-100">{goal.title}</span>" às{" "}
+                    <span className="text-zinc-100">
+                      {time(goal.completedAt)}
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
     </div>
   )

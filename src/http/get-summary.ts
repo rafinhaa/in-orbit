@@ -9,7 +9,7 @@ type GoalsPerDay = {
 type SummaryResponse = {
   completed: number
   total: number
-  goalsPerDay: GoalsPerDay[]
+  goalsPerDay: Record<string, GoalsPerDay[]>
 }[]
 
 export const getSummary = async (): Promise<SummaryResponse> => {
